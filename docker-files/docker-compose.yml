@@ -2,53 +2,53 @@ version: "3.7"
 
 services:
     # PHP-FPM - Service
-    # backend:
-    #     build:
-    #         context: ./backend
-    #         dockerfile: Dockerfile
-    #     container_name: crud_backend
-    #     restart: unless-stopped
-    #     tty: true
-    #     working_dir: /var/www
-    #     volumes:
-    #         - ../backend:/var/www
-    #         - ../docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    #     dns:
-    #       - "8.8.8.8"
-    #     networks:
-    #       app-network:
-    #         ipv4_address: "172.16.0.1"
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        container_name: crud_backend
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ../backend:/var/www
+            - ../docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        dns:
+          - "8.8.8.8"
+        networks:
+          app-network:
+            ipv4_address: "172.16.0.1"
 
-    # # NGINX - Service
-    # webserver:
-    #     image: nginx:1.20.1
-    #     container_name: crud_server
-    #     restart: unless-stopped
-    #     tty: true
-    #     ports:
-    #         - "8100:80"
-    #         - "8443:443"
-    #     volumes:
-    #         - ../docker-files/nginx/:/etc/nginx/conf.d/
+    # NGINX - Service
+    webserver:
+        image: nginx:1.20.1
+        container_name: crud_server
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "8100:80"
+            - "8443:443"
+        volumes:
+            - ../docker-files/nginx/:/etc/nginx/conf.d/
 
-    # # MariaDB - Service
-    # db:
-    #     image: mariadb:10.5.6
-    #     container_name: crud_db
-    #     restart: unless-stopped
-    #     tty: true
-    #     ports:
-    #         - "3306:3306"
-    #     environment:
-    #         MYSQL_DATABASE: crud_db
-    #         MYSQL_ROOT_PASSWORD: el@Paco24#
-    #         TZ: Africa/Kampala
-    #     volumes:
-    #         - mariadbdata:/var/lib/mysql
-    #         - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
-    #     networks:
-    #         app-network:
-    #           ipv4_address: "172.16.0.3"
+    # MariaDB - Service
+    db:
+        image: mariadb:10.5.6
+        container_name: crud_db
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: crud_db
+            MYSQL_ROOT_PASSWORD: el@Paco24#
+            TZ: Africa/Kampala
+        volumes:
+            - mariadbdata:/var/lib/mysql
+            - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            app-network:
+              ipv4_address: "172.16.0.3"
 
     # # Db Manager - Service
     # adminer:
