@@ -17,19 +17,22 @@ services:
           - "8.8.8.8"
         networks:
           app-network:
-            ipv4_address: "172.16.0.1"
+            ipv4_address: "172.16.0.2"
 
     # NGINX - Service
     webserver:
         image: nginx:1.20.1
         container_name: crud_server
-        restart: unless-stopped
+        # restart: unless-stopped
         tty: true
         ports:
             - "8100:80"
             - "8443:443"
         volumes:
-            - ../docker-files/nginx/:/etc/nginx/conf.d/
+            - ./nginx/:/etc/nginx/conf.d/
+        # networks:
+        #     app-network:
+        #       ipv4_address: "172.16.0.3"
 
     # MariaDB - Service
     db:
@@ -46,9 +49,19 @@ services:
         volumes:
             - mariadbdata:/var/lib/mysql
             - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
+
+    vuejs:
+        image: node:14
+        container_name: crud_frontend
+        working_dir: /app
+        ports:
+            - "8081:8080"
+        volumes:
+            - ../frontend:/app
+        command: sh -c "yarn install && yarn serve" # faster for development
         networks:
-            app-network:
-              ipv4_address: "172.16.0.3"
+          app-network:
+            ipv4_address: "172.16.0.4"
 
     # # Db Manager - Service
     # adminer:
@@ -62,20 +75,18 @@ services:
     #         PGADMIN_DEFAULT_PASSWORD: 12345678
     #     networks:
     #         app-network:
-    #           ipv4_address: "172.16.0.4"
+    #           ipv4_address: "172.16.0.5"
 
-    vuejs:
-        image: node:14
-        container_name: crud_frontend
-        working_dir: /app
-        ports:
-            - "8081:8080"
-        volumes:
-            - ../frontend:/app
-        command: sh -c "yarn install && yarn serve" # faster for development
-        networks:
-          app-network:
-            ipv4_address: "172.16.0.5"
+    # redis:
+    #     image: redis:latest
+    #     container_name: redis
+    #     restart: always
+    #     ports:
+    #     - "6379:6379"
+    #     networks:
+    #     vpsp5_backend:
+    #         ipv4_address: "172.40.0.3"
+
 
 # Volumes
 volumes:

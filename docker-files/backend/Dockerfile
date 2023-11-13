@@ -1,6 +1,6 @@
 FROM php:7.3-fpm
 
-COPY composer.lock composer.json /var/www/
+# COPY composer.lock composer.json /var/www/
 
 WORKDIR /var/www
 
@@ -40,8 +40,8 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 COPY --chown=www:www . /var/www
 RUN chown -R www-data:www-data /var/www
 
-# Copy application folder
-COPY ../../backend /var/www
+# Copy application folder (Cannot copy 2 levels behind)
+# COPY ../../backend /var/www
 
 # change current user to www
 USER www
