@@ -16,14 +16,14 @@ services:
         dns:
           - "8.8.8.8"
         networks:
-          - app-network
-            # ipv4_address: "172.16.0.2"
+            app-network:
+                ipv4_address: "172.31.0.2"
 
     # NGINX - Service
     webserver:
-        image: nginx:1.20.1
+        image: nginx:alpine
         container_name: crud_server
-        # restart: unless-stopped
+        restart: unless-stopped
         tty: true
         ports:
             - "8100:80"
@@ -49,19 +49,24 @@ services:
             - mariadbdata:/var/lib/mysql
             - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
         networks:
-            - app-network
+            app-network:
+                ipv4_address: "172.31.0.3"
+
 
     vuejs:
         image: node:14
         container_name: crud_frontend
         working_dir: /app
+        restart: unless-stopped
         ports:
             - "8081:8080"
         volumes:
             - ../frontend:/app
         command: sh -c "yarn install && yarn serve" # faster for development
         networks:
-          - app-network
+            app-network:
+                ipv4_address: "172.31.0.4"
+
 
     # # Db Manager - Service
     # adminer:
@@ -75,7 +80,8 @@ services:
     #         PGADMIN_DEFAULT_PASSWORD: 12345678
     #     networks:
     #         app-network:
-    #           ipv4_address: "172.16.0.5"
+    #             ipv4_address: "172.31.0.5"
+
 
     # redis:
     #     image: redis:latest
@@ -84,8 +90,8 @@ services:
     #     ports:
     #     - "6379:6379"
     #     networks:
-    #     vpsp5_backend:
-    #         ipv4_address: "172.40.0.3"
+    #         app-network:
+    #             ipv4_address: "172.31.0.6"
 
 
 # Volumes
@@ -97,3 +103,6 @@ volumes:
 networks:
   app-network:
       driver: bridge
+      ipam:
+        config:
+          - subnet: 172.31.0.0/24
