@@ -16,8 +16,8 @@ services:
         dns:
           - "8.8.8.8"
         networks:
-          app-network:
-            ipv4_address: "172.16.0.2"
+          - app-network
+            # ipv4_address: "172.16.0.2"
 
     # NGINX - Service
     webserver:
@@ -30,9 +30,8 @@ services:
             - "8443:443"
         volumes:
             - ./nginx/:/etc/nginx/conf.d/
-        # networks:
-        #     app-network:
-        #       ipv4_address: "172.16.0.3"
+        networks:
+            - app-network
 
     # MariaDB - Service
     db:
@@ -49,6 +48,8 @@ services:
         volumes:
             - mariadbdata:/var/lib/mysql
             - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - app-network
 
     vuejs:
         image: node:14
@@ -60,8 +61,7 @@ services:
             - ../frontend:/app
         command: sh -c "yarn install && yarn serve" # faster for development
         networks:
-          app-network:
-            ipv4_address: "172.16.0.4"
+          - app-network
 
     # # Db Manager - Service
     # adminer:
@@ -97,6 +97,3 @@ volumes:
 networks:
   app-network:
       driver: bridge
-      ipam:
-        config:
-            - subnet: 172.16.0.0/24
