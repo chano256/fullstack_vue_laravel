@@ -43,7 +43,7 @@ services:
             - "3310:3306"
         environment:
             MYSQL_DATABASE: crud_db
-            MYSQL_ROOT_PASSWORD: el@Paco24#
+            MYSQL_ROOT_PASSWORD: tz@Tadpole4#
             TZ: Africa/Kampala
         volumes:
             - mariadbdata:/var/lib/mysql
@@ -68,19 +68,19 @@ services:
                 ipv4_address: "172.31.0.4"
 
 
-    # # Db Manager - Service
-    # adminer:
-    #     image: adminer:4.8.1
-    #     container_name: crud_adminer
-    #     restart: unless-stopped
-    #     ports:
-    #         - 8002:8080 # 5432
-    #     environment:
-    #         PGADMIN_DEFAULT_EMAIL: allandavicham@gmail.com
-    #         PGADMIN_DEFAULT_PASSWORD: 12345678
-    #     networks:
-    #         app-network:
-    #             ipv4_address: "172.31.0.5"
+    # Db Manager - Service
+    adminer:
+        image: adminer:4.8.1
+        container_name: crud_adminer
+        restart: unless-stopped
+        ports:
+            - 8002:8080 # 5432
+        environment:
+            PGADMIN_DEFAULT_EMAIL: allandavicham@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: 12345678
+        networks:
+            app-network:
+                ipv4_address: "172.31.0.5"
 
 
     # redis:
