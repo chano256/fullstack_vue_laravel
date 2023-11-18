@@ -17,7 +17,7 @@ services:
           - "8.8.8.8"
         networks:
             app-network:
-                ipv4_address: "172.31.0.2"
+                ipv4_address: "172.16.0.2"
 
     # NGINX - Service
     webserver:
@@ -25,9 +25,11 @@ services:
         container_name: crud_server
         restart: unless-stopped
         tty: true
+        depends_on:
+            - backend
         ports:
-            - "8100:80"
-            - "8443:443"
+            - "8200:80"
+            - "9443:443"
         volumes:
             - ./nginx/:/etc/nginx/conf.d/
         networks:
@@ -50,7 +52,7 @@ services:
             - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
         networks:
             app-network:
-                ipv4_address: "172.31.0.3"
+                ipv4_address: "172.16.0.3"
 
 
     vuejs:
@@ -58,6 +60,7 @@ services:
         container_name: crud_frontend
         working_dir: /app
         restart: unless-stopped
+        tty: true
         ports:
             - "8081:8080"
         volumes:
@@ -65,7 +68,7 @@ services:
         command: sh -c "yarn install && yarn serve" # faster for development
         networks:
             app-network:
-                ipv4_address: "172.31.0.4"
+                ipv4_address: "172.16.0.4"
 
 
     # Db Manager - Service
@@ -80,7 +83,7 @@ services:
             PGADMIN_DEFAULT_PASSWORD: 12345678
         networks:
             app-network:
-                ipv4_address: "172.31.0.5"
+                ipv4_address: "172.16.0.5"
 
 
     # redis:
@@ -91,7 +94,7 @@ services:
     #     - "6350:6379"
     #     networks:
     #         app-network:
-    #             ipv4_address: "172.31.0.6"
+    #             ipv4_address: "172.16.0.6"
 
 
 # Volumes
@@ -105,4 +108,4 @@ networks:
       driver: bridge
       ipam:
         config:
-          - subnet: 172.31.0.0/24
+          - subnet: 172.16.0.0/24
