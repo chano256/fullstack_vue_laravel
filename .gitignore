@@ -2,11 +2,6 @@
 node_modules
 /dist
 
-
-# local env files
-.env.local
-.env.*.local
-
 # Log files
 npm-debug.log*
 yarn-debug.log*
@@ -29,8 +24,6 @@ node_modules
 /public/storage
 /storage/*.key
 /vendor
-.env
-.env.backup
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -42,8 +35,10 @@ yarn-error.log
 .DS_Store
 
 # Laravel specific files
-/.env
-/.env.*
+.env
+.env.local
+.env.*.local
+.env.backup
 /vendor
 /node_modules
 /public/hot
