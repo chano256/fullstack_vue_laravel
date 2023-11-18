@@ -1,111 +1,108 @@
-version: "3.7"
-
+version: '3.7'
 services:
-    # PHP-FPM - Service
-    backend:
-        build:
-            context: ./backend
-            dockerfile: Dockerfile
-        container_name: crud_backend
-        restart: unless-stopped
-        tty: true
-        working_dir: /var/www
-        volumes:
-            - ../backend:/var/www
-            - ../docker-files/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-        dns:
-          - "8.8.8.8"
-        networks:
-            app-network:
-                ipv4_address: "172.16.0.2"
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: crud_db
+    restart: unless-stopped
+    environment: 
+      - MYSQL_ROOT_PASSWORD=tz@Tadpole4#
+      - MYSQL_DATABASE=crud_db
+      - MYSQL_USER=crud_user
+      - MYSQL_PASSWORD=pass4Tadpole#
+      - MYSQL_INITDB_SKIP_TZINFO=yes
+      - TZ=Africa/Kampala
+    volumes: 
+      - crud_local:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+      - /tmp:/tmp
+    ports:
+      - "3360:3306"
+    networks:
+      crud_network:
+        ipv4_address: "172.16.0.1"
 
-    # NGINX - Service
-    webserver:
-        image: nginx:alpine
-        container_name: crud_server
-        restart: unless-stopped
-        tty: true
-        depends_on:
-            - backend
-        ports:
-            - "8200:80"
-            - "9443:443"
-        volumes:
-            - ./nginx/:/etc/nginx/conf.d/
-        networks:
-            - app-network
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crud_backend
+    working_dir: /var/www
+    restart: unless-stopped
+    hostname: crud_backend
+    logging:
+      driver: json-file
+    cap_add:
+       - SYS_PTRACE
+    volumes:
+      - ../backend:/var/www
+      - /etc/hosts:/etc/hosts
+      - /tmp:/tmp
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./nginx:/etc/nginx/conf.d
+      - ./supervisor:/etc/supervisor/conf.d
+    ports:
+      - 5003:80
+      - "6003:22"
+    dns:
+      - "8.8.8.8"
+    depends_on:
+      - db
+    networks:
+      crud_network:
+        ipv4_address: "172.16.0.2"
 
-    # MariaDB - Service
-    db:
-        image: mariadb:10.5.6
-        container_name: crud_db
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "3310:3306"
-        environment:
-            MYSQL_DATABASE: crud_db
-            MYSQL_ROOT_PASSWORD: tz@Tadpole4#
-            TZ: Africa/Kampala
-        volumes:
-            - mariadbdata:/var/lib/mysql
-            - ../docker-files/mysql/my.cnf:/etc/mysql/my.cnf
-        networks:
-            app-network:
-                ipv4_address: "172.16.0.3"
+  # frontend:
+  #   image: node:14
+  #   container_name: crud_frontend
+  #   working_dir: /app
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8081:8080"
+  #   volumes:
+  #     - ../frontend:/app
+  #   command: sh -c "yarn install && yarn serve" # faster for development
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     app-network:
+  #       ipv4_address: "172.16.0.3"
 
+  # redis:
+  #   image: redis:latest
+  #   container_name: crud_redis
+  #   restart: unless-stopped
+  #   ports:
+  #     - "6380:6379"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     crud_network:
+  #       ipv4_address: "172.16.0.4"
 
-    vuejs:
-        image: node:14
-        container_name: crud_frontend
-        working_dir: /app
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "8081:8080"
-        volumes:
-            - ../frontend:/app
-        command: sh -c "yarn install && yarn serve" # faster for development
-        networks:
-            app-network:
-                ipv4_address: "172.16.0.4"
+  # adminer:
+  #   image: adminer:4.8.1
+  #   container_name: crud_adminer
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8002:8080 # 5432
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: testemail@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: adminer@Tadpole4#
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     app-network:
+  #       ipv4_address: "172.16.0.5"
 
+volumes: 
+  crud_local:
+    driver: local
 
-    # Db Manager - Service
-    adminer:
-        image: adminer:4.8.1
-        container_name: crud_adminer
-        restart: unless-stopped
-        ports:
-            - 8002:8080 # 5432
-        environment:
-            PGADMIN_DEFAULT_EMAIL: allandavicham@gmail.com
-            PGADMIN_DEFAULT_PASSWORD: 12345678
-        networks:
-            app-network:
-                ipv4_address: "172.16.0.5"
-
-
-    # redis:
-    #     image: redis:latest
-    #     container_name: redis
-    #     restart: always
-    #     ports:
-    #     - "6350:6379"
-    #     networks:
-    #         app-network:
-    #             ipv4_address: "172.16.0.6"
-
-
-# Volumes
-volumes:
-    mariadbdata:
-        driver: local
-
-# Networks
 networks:
-  app-network:
-      driver: bridge
-      ipam:
-        config:
-          - subnet: 172.16.0.0/24
+  crud_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24
