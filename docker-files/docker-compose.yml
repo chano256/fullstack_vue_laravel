@@ -21,7 +21,7 @@ services:
       - "3360:3306"
     networks:
       crud_network:
-        ipv4_address: "172.16.0.1"
+        ipv4_address: "172.10.0.1"
 
   backend:
     build:
@@ -48,7 +48,7 @@ services:
       - db
     networks:
       crud_network:
-        ipv4_address: "172.16.0.2"
+        ipv4_address: "172.10.0.2"
 
   # frontend:
   #   image: node:14
@@ -64,7 +64,7 @@ services:
   #     - backend
   #   networks:
   #     app-network:
-  #       ipv4_address: "172.16.0.3"
+  #       ipv4_address: "172.10.0.3"
 
   # redis:
   #   image: redis:latest
@@ -76,7 +76,7 @@ services:
   #     - backend
   #   networks:
   #     crud_network:
-  #       ipv4_address: "172.16.0.4"
+  #       ipv4_address: "172.10.0.4"
 
   # adminer:
   #   image: adminer:4.8.1
@@ -91,7 +91,7 @@ services:
   #     - db
   #   networks:
   #     app-network:
-  #       ipv4_address: "172.16.0.5"
+  #       ipv4_address: "172.10.0.5"
 
 volumes: 
   crud_local:
@@ -102,4 +102,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.16.0.0/24
+        - subnet: 172.10.0.0/24
