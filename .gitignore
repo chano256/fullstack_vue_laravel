@@ -1,0 +1,72 @@
+.DS_Store
+node_modules
+/dist
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+node_modules
+
+
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode
+.DS_Store
+
+# Laravel specific files
+/.env
+/.env.*
+/vendor
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+/.idea
+
+# Laravel Mix
+/node_modules
+/public/css
+/public/js
+/public/mix-manifest.json
+/public/mix.js
+/public/hot
+/public/storage
+
+# Homestead
+/.vagrant
+Homestead.yaml
+Homestead.json
+
+# PHPUnit
+/phpunit.xml
+/phpunit.xml.*
+/tests/

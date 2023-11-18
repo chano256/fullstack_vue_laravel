@@ -28,7 +28,6 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: crud_backend
-    working_dir: /var/www
     restart: unless-stopped
     hostname: crud_backend
     logging:
@@ -40,8 +39,6 @@ services:
       - /etc/hosts:/etc/hosts
       - /tmp:/tmp
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./nginx:/etc/nginx/conf.d
-      - ./supervisor:/etc/supervisor/conf.d
     ports:
       - 5003:80
       - "6003:22"
