@@ -1,95 +1,57 @@
-version: '3.7'
+version: '3.1'
+
 services:
   db:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    container_name: crud_db
-    restart: unless-stopped
+    build: ./db
+    container_name: db
+    restart: always
     environment: 
-      - MYSQL_ROOT_PASSWORD=tz@Tadpole4#
-      - MYSQL_DATABASE=crud_db
-      - MYSQL_USER=crud_user
-      - MYSQL_PASSWORD=pass4Tadpole#
+      - MYSQL_ROOT_PASSWORD=238ska8e2
+      - MYSQL_DATABASE=sp5
+      - MYSQL_USER=sp5
+      - MYSQL_PASSWORD=srSI49is0ksdslewiE
       - MYSQL_INITDB_SKIP_TZINFO=yes
-      - TZ=Africa/Kampala
     volumes: 
-      - crud_local:/var/lib/mysql
-      - ./db/my.cnf:/etc/mysql/my.cnf
+      - db-sp5:/var/lib/mysql:rw
       - /tmp:/tmp
     ports:
-      - "3360:3306"
-
+      - "3391:3306"
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: crud_backend
-    restart: unless-stopped
-    hostname: crud_backend
+    build: .
+    container_name: backend
+    restart: always
+    hostname: sp5_backend
     logging:
       driver: json-file
     cap_add:
        - SYS_PTRACE
     volumes:
-      - ../backend:/var/www
+      - /var/www/html/sp5:/app
       - /etc/hosts:/etc/hosts
       - /tmp:/tmp
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - /var/www/html/sp5_nginx:/etc/nginx/conf.d
+      - /var/www/html/sp5_supervisor:/etc/supervisor/conf.d
     ports:
       - 5003:80
       - "6003:22"
     dns:
       - "8.8.8.8"
-    depends_on:
-      - db
     networks:
-      crud_network:
+      vpsp5_backend:
+        ipv4_address: "172.40.0.2"
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      vpsp5_backend:
         ipv4_address: "172.40.0.3"
-
-  # frontend:
-  #   image: node:14
-  #   container_name: crud_frontend
-  #   working_dir: /app
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8081:8080"
-  #   volumes:
-  #     - ../frontend:/app
-  #   command: sh -c "yarn install && yarn serve" # faster for development
-  #   depends_on:
-  #     - backend
-
-  # redis:
-  #   image: redis:latest
-  #   container_name: crud_redis
-  #   restart: unless-stopped
-  #   ports:
-  #     - "6380:6379"
-  #   depends_on:
-  #     - backend
-
-  # adminer:
-  #   image: adminer:4.8.1
-  #   container_name: crud_adminer
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8002:8080 # 5432
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: testemail@gmail.com
-  #     PGADMIN_DEFAULT_PASSWORD: adminer@Tadpole4#
-  #   depends_on:
-  #     - db
-  #   # networks:
-  #   #   crud_network:
-  #   #     ipv4_address: "172.40.0.5"
-
 volumes: 
-  crud_local:
-    driver: local
-
+  db-sp5: {}
 networks:
-  crud_network:
+  vpsp5_backend:
     driver: bridge
     ipam:
       config:
