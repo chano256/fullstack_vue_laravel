@@ -43,6 +43,9 @@ services:
       - "8.8.8.8"
     depends_on:
       - db
+    networks:
+      crud_network:
+        ipv4_address: "172.40.0.3"
 
   # frontend:
   #   image: node:14
@@ -78,7 +81,7 @@ services:
   #   depends_on:
   #     - db
   #   # networks:
-  #   #   app-network:
+  #   #   crud_network:
   #   #     ipv4_address: "172.40.0.5"
 
 volumes: 
