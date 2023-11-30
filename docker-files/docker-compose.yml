@@ -1,36 +1,34 @@
-version: '3.1'
+version: '3.7'
 
 services:
   db:
     build: ./db
     container_name: db
     restart: always
-    environment: 
-      - MYSQL_ROOT_PASSWORD=238ska8e2
-      - MYSQL_DATABASE=sp5
-      - MYSQL_USER=sp5
-      - MYSQL_PASSWORD=srSI49is0ksdslewiE
+    environment:
+      - MYSQL_ROOT_PASSWORD=sql@Paco24#
+      - MYSQL_DATABASE=crud_db
+      - MYSQL_USER=crud_user
+      - MYSQL_PASSWORD=crud@Paco24#
       - MYSQL_INITDB_SKIP_TZINFO=yes
     volumes: 
-      - db-sp5:/var/lib/mysql:rw
-      - /tmp:/tmp
+      - crud:/var/lib/mysql
     ports:
       - "3391:3306"
+
   backend:
-    build: .
+    build: ./backend
     container_name: backend
     restart: always
-    hostname: sp5_backend
+    hostname: crud
     logging:
       driver: json-file
     cap_add:
        - SYS_PTRACE
     volumes:
-      - /var/www/html/sp5:/app
-      - /etc/hosts:/etc/hosts
-      - /tmp:/tmp
-      - /var/www/html/sp5_nginx:/etc/nginx/conf.d
-      - /var/www/html/sp5_supervisor:/etc/supervisor/conf.d
+      - ../backend:/app
+      - ./nginx:/etc/nginx/conf.d
+      - ./supervisor:/etc/supervisor/conf.d
     ports:
       - 5003:80
       - "6003:22"
@@ -39,17 +37,19 @@ services:
     networks:
       vpsp5_backend:
         ipv4_address: "172.40.0.2"
-  redis:
-    image: redis:latest
-    container_name: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    networks:
-      vpsp5_backend:
-        ipv4_address: "172.40.0.3"
+  # redis:
+  #   image: redis:latest
+  #   container_name: redis
+  #   restart: always
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     vpsp5_backend:
+  #       ipv4_address: "172.40.0.3"
+
 volumes: 
-  db-sp5: {}
+  crud: {}
+
 networks:
   vpsp5_backend:
     driver: bridge

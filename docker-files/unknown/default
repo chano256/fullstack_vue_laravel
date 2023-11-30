@@ -19,8 +19,8 @@ server {
 
         server_name _;
 
-	error_page 404 /sp5_404.html;
-        location = /sp5_404.html {
+	error_page 404 /custom_404.html;
+        location = /custom_404.html {
                 root /usr/share/nginx/html;
                 internal;
         }
