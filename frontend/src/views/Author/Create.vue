@@ -2,7 +2,7 @@
     <div class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h4>Create Author</h1>
+                <h4>Create Author</h4>
             </div>
             <div class="card-body">
                 <div class="mb-3">
