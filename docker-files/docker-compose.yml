@@ -39,6 +39,38 @@ services:
     networks:
       vpsp5_backend:
         ipv4_address: "172.40.0.2"
+
+  frontend:
+    image: node:14
+    container_name: frontend
+    working_dir: /app
+    restart: always
+    ports:
+      - "8085:8080"
+    volumes:
+      - ../frontend:/app
+    command: sh -c "yarn install && yarn serve" # faster for development
+    depends_on:
+      - backend
+    networks:
+      vpsp5_backend:
+        ipv4_address: "172.40.0.3"
+
+  # adminer:
+  #   image: adminer:4.8.1
+  #   container_name: crud_adminer
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8002:8080 # 5432
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: testemail@gmail.com
+  #     PGADMIN_DEFAULT_PASSWORD: adminer@Tadpole4#
+  #   depends_on:
+  #     - db
+  #   # networks:
+  #   #   crud_network:
+  #   #     ipv4_address: "172.40.0.5"
+
   # redis:
   #   image: redis:latest
   #   container_name: redis
