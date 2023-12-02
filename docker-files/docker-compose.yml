@@ -25,6 +25,8 @@ services:
       driver: json-file
     cap_add:
        - SYS_PTRACE
+    depends_on:
+      - db
     volumes:
       - ../backend:/app
       - ./nginx:/etc/nginx/conf.d

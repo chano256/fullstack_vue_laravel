@@ -1,14 +1,13 @@
 FROM centos:7
 
 RUN yum -y update
-COPY mariadb.repo /etc/yum.repos.d/
 
 RUN yum -y install epel-release
 RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum -y --disablerepo="*" --enablerepo="remi-safe" list php[7-9][0-9].x86_64
 RUN yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
 RUN yum-config-manager --enable remi-php73
-RUN yum -y install php php-mysql php-mysqlnd php-pdo php-mbstring php-xml php-bcmath php-ctype php-fileinfo php-json php-imagick cron git nano tcpflow supervisor cronie net-tools php-soap zip unzip php-zip MariaDB-client nginx php-fpm git docker mysql-server python3-pymysql python3-pip openssh-server
+RUN yum -y install php php-mysql php-mysqlnd php-pdo php-mbstring php-xml php-bcmath php-ctype php-fileinfo php-json php-imagick cron git nano tcpflow supervisor cronie net-tools php-soap zip unzip php-zip nginx php-fpm git docker mysql-server python3-pymysql python3-pip openssh-server mariadb-server mariadb-client mariadb
 
 COPY systemctl.py /usr/bin/systemctl
 RUN chmod a+x /usr/bin/systemctl
@@ -45,4 +44,5 @@ RUN yum install -y sudo telnet
 RUN pip3 install pymysql
 RUN yum install -y php-gd php-posix fcgi 
 
-CMD ["/bin/bash", "-c", "systemctl start supervisord && systemctl start crond && systemctl start php-fpm && systemctl start nginx && systemctl start mysql && systemctl start sshd && ping -i5 8.8.8.8"]
+CMD ["/bin/bash", "-c", "ping -i5 8.8.8.8"]
+# CMD ["/bin/bash", "-c", "systemctl start mariadb && systemctl start php-fpm && systemctl start nginx && systemctl start sshd && systemctl start supervisord && systemctl start crond && ping -i5 8.8.8.8"]
