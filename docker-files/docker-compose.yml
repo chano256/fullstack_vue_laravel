@@ -1,20 +1,23 @@
 version: '3.7'
 
 services:
-  db:
-    build: ./db
-    container_name: db
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=sql@Paco24#
-      - MYSQL_DATABASE=crud_db
-      - MYSQL_USER=crud_user
-      - MYSQL_PASSWORD=crud@Paco24#
-      - MYSQL_INITDB_SKIP_TZINFO=yes
-    volumes: 
-      - crud:/var/lib/mysql
-    ports:
-      - "3391:3306"
+  # db:
+  #   build: ./db
+  #   container_name: db
+  #   restart: always
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=sql@Paco24#
+  #     - MYSQL_DATABASE=crud_db
+  #     - MYSQL_USER=crud_user
+  #     - MYSQL_PASSWORD=crud@Paco24#
+  #     - MYSQL_INITDB_SKIP_TZINFO=yes
+  #   volumes: 
+  #     - crud:/var/lib/mysql
+  #   ports:
+  #     - "3391:3306"
+  #   networks:
+  #     vpsp5_backend:
+  #       ipv4_address: "172.40.0.2"
 
   backend:
     build: ./backend
@@ -25,12 +28,13 @@ services:
       driver: json-file
     cap_add:
        - SYS_PTRACE
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     volumes:
       - ../backend:/app
       - ./nginx:/etc/nginx/conf.d
       - ./supervisor:/etc/supervisor/conf.d
+      - crud:/var/lib/mysql
     ports:
       - 5003:80
       - "6003:22"
@@ -38,7 +42,7 @@ services:
       - "8.8.8.8"
     networks:
       vpsp5_backend:
-        ipv4_address: "172.40.0.2"
+        ipv4_address: "172.40.0.3"
 
   frontend:
     image: node:14
@@ -49,12 +53,12 @@ services:
       - "8085:8080"
     volumes:
       - ../frontend:/app
-    command: sh -c "yarn install && yarn serve" # faster for development
+    command: sh -c "yarn install && yarn serve"
     depends_on:
       - backend
     networks:
       vpsp5_backend:
-        ipv4_address: "172.40.0.3"
+        ipv4_address: "172.40.0.4"
 
   # adminer:
   #   image: adminer:4.8.1
@@ -79,7 +83,7 @@ services:
   #     - "6379:6379"
   #   networks:
   #     vpsp5_backend:
-  #       ipv4_address: "172.40.0.3"
+  #       ipv4_address: "172.40.0.6"
 
 volumes: 
   crud: {}
