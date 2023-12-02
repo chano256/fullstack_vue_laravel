@@ -18,6 +18,6 @@ Route::prefix('authors')->group(function () {
     Route::get('/', [AuthorController::class, 'index'])->name('authors.index');
     Route::get('/{author_id}', [AuthorController::class, 'show'])->name('authors.show');
     Route::post('/', [AuthorController::class, 'store'])->name('authors.store');
-    Route::put('/{post}', [AuthorController::class, 'update'])->name('authors.update');
+    Route::patch('/{author_id}', [AuthorController::class, 'update'])->name('authors.update');
     Route::delete('/{author_id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
 });

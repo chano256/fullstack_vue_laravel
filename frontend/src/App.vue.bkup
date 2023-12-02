@@ -1,0 +1,19 @@
+<template>
+  <div id="app">
+    <Authors />
+  </div>
+</template>
+
+<script>
+import Authors from './components/author/Authors.vue';
+
+export default {
+  name: 'Authors',
+  components: {
+    Authors,
+  },
+};
+</script>
+
+<style>
+</style>
