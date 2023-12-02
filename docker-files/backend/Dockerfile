@@ -44,5 +44,5 @@ RUN yum install -y sudo telnet
 RUN pip3 install pymysql
 RUN yum install -y php-gd php-posix fcgi 
 
-CMD ["/bin/bash", "-c", "ping -i5 8.8.8.8"]
-# CMD ["/bin/bash", "-c", "systemctl start mariadb && systemctl start php-fpm && systemctl start nginx && systemctl start sshd && systemctl start supervisord && systemctl start crond && ping -i5 8.8.8.8"]
+# CMD ["/bin/bash", "-c", "ping -i5 8.8.8.8"]
+CMD ["/bin/bash", "-c", "systemctl start mariadb && systemctl start php-fpm && systemctl start nginx && systemctl start sshd && systemctl start supervisord && systemctl start crond && ping -i5 8.8.8.8"]
