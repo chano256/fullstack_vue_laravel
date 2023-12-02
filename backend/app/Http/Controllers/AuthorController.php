@@ -31,6 +31,11 @@ class AuthorController extends Controller
     {
         unset($request);
 
+        $author = new Author();
+        $author->name = 'Foedn Todd';
+        $author->email = 'foden@example.com';
+        $author->save();
+
         $authors = Author::all();
 
         return view('authors.index', ['authors' => $authors]);
