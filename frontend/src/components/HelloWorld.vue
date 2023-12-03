@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h5>{{ msg }}</h5>
     <p>This will be a vue js and laravel api project</p>
   </div>
 </template>

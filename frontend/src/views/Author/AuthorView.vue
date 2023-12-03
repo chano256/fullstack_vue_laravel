@@ -19,7 +19,7 @@
 import axios from 'axios'
 
 export default {
-    name: 'Author',
+    name: 'showAuthor',
     data() {
         return {
             author: []

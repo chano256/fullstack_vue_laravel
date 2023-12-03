@@ -70,7 +70,7 @@ export default {
             if(confirm("Are you sure to delete this author ?")){
                 this.axios.delete(`/api/authors/${id}`)
                     .then(response => {
-                        this.getCategories()
+                        console.log(response)
                     }).catch(error=>{
                         console.log(error)
                     })

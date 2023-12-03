@@ -7,11 +7,14 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control" v-model="author.name" />
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" />
+                    <input type="email" class="form-control" v-model="author.email" />
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
@@ -25,7 +28,11 @@ export default {
     name: 'createAuthor',
     data() {
         return {
-            authors: []
+            author: {
+                name: '',
+                email: ''
+
+            }
         }
     },
     mounted() {
