@@ -32,46 +32,51 @@
             </div>
         </div>
     </div>
+
+    <HelloWorld msg="Hello World" />
 </template>
 
 <script>
 import axios from 'axios'
+import HelloWorld from '../../components/HelloWorld.vue'
 
 export default {
     name: 'listAuthors',
     data() {
         return {
             authors: []
-        }
+        };
     },
     mounted() {
-        this.getAuthors()
+        this.getAuthors();
     },
     methods: {
         getAuthors() {
             axios.get('http://localhost:5003/api/authors')
                 .then(response => {
-                    this.authors = response.data
-                })
+                this.authors = response.data;
+            });
         },
         deleteAuthor(id) {
-            if(confirm("Are you sure to delete this author ?")){
+            if (confirm("Are you sure to delete this author ?")) {
                 axios.delete(`http://localhost:5003/api/authors/${id}`)
                     .then(response => {
-                        alert(response.data);
-                        this.getAuthors();
-                    }).catch(error => {
-                        if (error.response) {
-                            if (error.response.status === 404) {
-                                alert(error.response.data.message);
-                            } else {
-                                // research how to handle 500 errors
-                                console.log('Something went wrong when deleting. Contact Support, 500 error');
-                            }
+                    alert(response.data);
+                    this.getAuthors();
+                }).catch(error => {
+                    if (error.response) {
+                        if (error.response.status === 404) {
+                            alert(error.response.data.message);
                         }
-                    })
+                        else {
+                            // research how to handle 500 errors
+                            console.log('Something went wrong when deleting. Contact Support, 500 error');
+                        }
+                    }
+                });
             }
         }
-    }
+    },
+    components: { HelloWorld }
 }
 </script>
