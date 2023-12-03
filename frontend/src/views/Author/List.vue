@@ -20,7 +20,7 @@
                             <td>{{ author.email }}</td>
                             <td>
                                 <RouterLink :to="{path : '/authors/' + author.id + '/update'}" class="btn btn-success mx-2">Edit</RouterLink>
-                                <button type="button" class="btn btn-danger float-end">Delete</button>
+                                <button type="button" class="btn btn-danger float-end" @click="deleteAuthor(author.id)">Delete</button>
                                 <!-- <td><button @click="deleteAuthor(author.id)">Delete</td> -->
                             </td>
                         </tr>
@@ -54,24 +54,21 @@ export default {
                     this.authors = response.data
                 })
         },
-        getAuthor() {
-            this.axios.get('/api/authors')
-                .then((response) => {
-                    console.log(response)
-                    this.author = response 
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
-            console.log('Get Author')
-        },
-        deleteAuthor(id){
+        deleteAuthor(id) {
             if(confirm("Are you sure to delete this author ?")){
-                this.axios.delete(`/api/authors/${id}`)
+                axios.delete(`http://localhost:5003/api/authors/${id}`)
                     .then(response => {
-                        console.log(response)
-                    }).catch(error=>{
-                        console.log(error)
+                        alert(response.data);
+                        this.getAuthors();
+                    }).catch(error => {
+                        if (error.response) {
+                            if (error.response.status === 404) {
+                                alert(error.response.data.message);
+                            } else {
+                                // research how to handle 500 errors
+                                console.log('Something went wrong when deleting. Contact Support, 500 error');
+                            }
+                        }
                     })
             }
         }
