@@ -34,6 +34,7 @@ services:
       - ../backend:/app
       - ./nginx:/etc/nginx/conf.d
       - ./supervisor:/etc/supervisor/conf.d
+      - ./mysql/my.cnf:/etc/my.cnf
       - crud:/var/lib/mysql
     ports:
       - 5003:80

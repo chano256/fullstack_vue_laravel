@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,8 @@ Route::prefix('authors')->group(function () {
     Route::post('/', [AuthorController::class, 'store'])->name('authors.store');
     Route::patch('/{author_id}', [AuthorController::class, 'update'])->name('authors.update');
     Route::delete('/{author_id}', [AuthorController::class, 'destroy'])->name('authors.destroy');
+});
+
+Route::prefix('categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('authors.index');
 });
