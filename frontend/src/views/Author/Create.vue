@@ -53,7 +53,10 @@ export default {
                 .catch(error => {
                     if (error.response) {
                         if (error.response.status === 422) {
-                            authorError.errorList = error.response.data.errors;                            
+                            authorError.errorList = error.response.data.errors;
+                        } else {
+                            // research how to handle 500 errors
+                            console.log('Something went wrong. Contact Support, 500 error');
                         }
                         console.log(error.response.data);
                     }

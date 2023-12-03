@@ -11,7 +11,7 @@ const routes = [
     { path: "/authors/:id/delete", name: "authors-delete", component: AuthorView },
 
     // otherwise return them home with a regex
-    { path: "/:pathMatch(.*)*", redirect: "/" }
+    { path: "/:pathMatch(.*)*", redirect: "/authors" }
 ];
 
 const router = createRouter({
