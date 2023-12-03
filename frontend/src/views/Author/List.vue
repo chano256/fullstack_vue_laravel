@@ -25,7 +25,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody v-else="this.authors.length === 0">
+                    <tbody v-else>
                         <tr colspan="3">{{this.authors.length}} Authors Found</tr>
                     </tbody>
                 </table>
@@ -38,7 +38,7 @@
 import axios from 'axios'
 
 export default {
-    name: 'authors',
+    name: 'listAuthors',
     data() {
         return {
             authors: []
@@ -53,9 +53,6 @@ export default {
             axios.get('http://localhost:5003/api/authors')
                 .then(response => {
                     this.authors = response.data
-                })
-                .catch((error) => {
-                    console.log(error)
                 })
         },
         getAuthor() {

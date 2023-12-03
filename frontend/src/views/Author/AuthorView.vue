@@ -31,7 +31,7 @@ export default {
     },
     methods: {
         getAuthor() {
-            this.axios.get('/api/authors')
+            axios.get('/api/authors')
                 .then((response) => {
                     console.log(response)
                     this.author = response 
