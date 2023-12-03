@@ -72,7 +72,7 @@ class AuthorController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'name' => 'required|between:2,50',
+            'name' => 'required|between:3,50',
             'email' => 'required|email|between:5,50',
         ]);
 
