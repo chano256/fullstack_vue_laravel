@@ -73,14 +73,14 @@ class AuthorController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|between:3,50',
-            'email' => 'required|email|between:5,50',
+            'email' => 'required|email|between:5,50|unique:authors,email,' . $id,
         ]);
 
         $author = Author::findOrFail($id);
 
-        $author_with_email = Author::whereEmail($data['email'])->count();
+        $author_with_email = Author::whereEmail($data['email'])->where('id', '!=', $id)->first();
         abort_if(
-            ($author_with_email > 0),
+            isset($author_with_email),
             Response::HTTP_UNPROCESSABLE_ENTITY,
             'Author With Email Already Exists'
         );

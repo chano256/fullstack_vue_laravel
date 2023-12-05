@@ -72,7 +72,7 @@ export default {
                         }
 
                         if (error.response.status === 404) {
-                            alert(error.response.data.message);
+                            console.log('Allan 404')
                         }
 
                         // research how to handle 500 errors
